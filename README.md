@@ -1,58 +1,102 @@
+[portfolio-hub-README.md](https://github.com/user-attachments/files/32883329/portfolio-hub-README.md)
 # 👨‍💻 Chauncey's Portfolio
 
-Welcome to my portfolio! Here you'll find a collection of my projects, code repositories, and technical guides spanning data engineering, analytics, and software development.
+Welcome to my portfolio. Here you'll find my projects, code repositories, and technical notes
+spanning data engineering, analytics, and energy markets.
 
----
+**Live site:** [chaunceyjones.github.io](https://chaunceyjones.github.io)
 
 ## 📌 Table of Contents
 
-- [Data Engineering](#-data-engineering)
-- [SQL](#-sql)
+- [Data Engineering](#%EF%B8%8F-data-engineering)
+- [SQL](#%EF%B8%8F-sql)
 - [Python](#-python)
-- [Tableau](#-tableau)
+- [Visualization](#-visualization)
 - [Chauncey's Guides](#-chaunceys-guides)
 
 ---
 
 ## 🏗️ Data Engineering
 
-*Brief overview of your data engineering experience, pipeline architecture, or cloud tools used.*
+End-to-end pipelines against real public data sources — including the parts that aren't clean.
+Both projects below source data that required handling genuine messiness: a discontinued API,
+prices buried in narrative prose, merged spreadsheet headers, and Excel formula errors sitting
+in the source file itself.
 
-- **[Project Title 1](./link-to-repo-or-folder)** - Short 1-sentence summary of the project and technologies used (e.g., Airflow, Docker, PostgreSQL).
-- **[Project Title 2](./link-to-repo-or-folder)** - Short summary of key takeaways or results achieved.
+### [Permian–Waha Basis Tracker](https://github.com/ChaunceyJones/waha-basis-tracker)
+Weekly pipeline tracking the price spread between Permian Basin (Waha) and Henry Hub natural
+gas. Pulls from the FRED and EIA APIs, parses Waha prices out of unstructured EIA report text
+with a regex parser, joins three sources on mismatched reporting dates, and flags statistical
+dislocations. Orchestrated as a scheduled Airflow DAG.
+`Python` · `Airflow` · `Pandas` · `SQL/DuckDB` · `scipy` · `BeautifulSoup`
 
-<br>
+### [Solar PPA Pricing & Discounting](https://github.com/ChaunceyJones/solar-ppa-pricing)
+Deal-pricing analysis across 1,775 utility-scale solar projects from LBNL's research database.
+Reads a 59-tab, ~57 MB Excel workbook, cleans a benchmark table with merged headers and literal
+`#N/A` cells, and segments realized prices against a third-party market index. Single-command
+pipeline runner with an automated validation step.
+`Python` · `Pandas` · `openpyxl` · `SQL/DuckDB` · `Jupyter`
+
+---
 
 ## 🗄️ SQL
 
-*Highlighting database queries, schema design, data modeling, and performance optimization.*
+Analytical SQL written against real project data, not toy schemas. In both cases the SQL exists
+alongside an independent pandas implementation, and a runner script diffs the two — two
+implementations agreeing is a stronger correctness signal than one looking plausible.
 
-- **[Project/Script Name 1](./link-to-folder)** - Description of the analysis, complex joins, or window functions used.
-- **[Project/Script Name 2](./link-to-folder)** - Brief note on the dataset or goal.
+### [Rolling anomaly detection](https://github.com/ChaunceyJones/waha-basis-tracker/blob/main/sql/basis_anomalies.sql)
+Window functions (`AVG() OVER`, `STDDEV_SAMP() OVER`) computing a trailing 12-observation
+z-score to flag price dislocations, with a minimum-periods guard so early rows don't get a
+score computed from too little history. Matches the pandas implementation to within rounding.
 
-<br>
+### [Vintage-matched price segmentation](https://github.com/ChaunceyJones/solar-ppa-pricing/blob/main/sql/pricing_segments.sql)
+CTEs, `UNION ALL` across two segment dimensions, and `CASE` logic that distinguishes "too few
+projects to be reliable" from "no benchmark exists for this region" — two genuinely different
+reasons for a missing result that are easy to silently collapse into one blank cell.
+
+---
 
 ## 🐍 Python
 
-*Data processing, automation scripts, machine learning, or custom analysis scripts.*
+Data extraction, cleaning, statistical analysis, and pipeline code. Highlights:
 
-- **[Project Title 1](./link-to-folder)** - Brief summary highlighting key libraries (e.g., Pandas, NumPy, Polars, Scikit-learn).
-- **[Project Title 2](./link-to-folder)** - Brief summary of what the script automates or solves.
+- **Web scraping with real-world failure handling** — retries with backoff, browser headers,
+  URL-pattern fallbacks, and honest reporting of which weeks couldn't be parsed and why
+  ([`parse_waha_weekly.py`](https://github.com/ChaunceyJones/waha-basis-tracker/blob/main/src/parse_waha_weekly.py))
+- **Hypothesis testing with multiple-comparisons correction** — correlation tests against
+  candidate leading indicators, where the honest conclusion was that a nominally significant
+  result doesn't survive a Bonferroni correction
+- **Excel parsing beyond `read_excel()` defaults** — merged headers located by inspecting raw
+  rows, and Excel formula-error strings explicitly converted rather than left as un-computable
+  text ([`load_benchmark_index.py`](https://github.com/ChaunceyJones/solar-ppa-pricing/blob/main/src/load_benchmark_index.py))
+- **Reproducible pipelines** — each project has a single `run_all.py` entry point that runs
+  every step in order and stops at the first failure
 
-<br>
+---
 
-## 📊 Tableau
+## 📊 Visualization
 
-*Dashboards, reporting systems, and interactive data visualizations.*
+Charts are generated in-pipeline with Matplotlib and embedded in each project's README. Each
+project also has a 12-slide presentation deck walking through context, method, findings,
+limitations, and recommendation.
 
-- **[Dashboard Name 1](https://link-to-tableau-public)** - Overview of key metrics tracked and business impact.
-- **[Dashboard Name 2](https://link-to-tableau-public)** - Overview of design features or audience.
+*Tableau dashboards: in progress — I'll add them here as they're built.*
 
-<br>
+---
 
 ## 📚 Chauncey's Guides
 
-*Walkthroughs, technical cheatsheets, and personal notes.*
+*In progress.* Planned write-ups, drawn from problems I actually hit building the projects above:
 
-- **[Guide Title 1](./path-to-guide.md)** - Brief summary of what this guide covers.
-- **[Guide Title 2](./path-to-guide.md)** - Brief summary of key topics.
+- Parsing data out of government reports when no clean API exists
+- Why your SVG renders in a browser but breaks on GitHub (strict XML vs. HTML entities)
+- Vintage-matching price data before benchmarking it — and the $194/MWh mistake that happens
+  when you don't
+
+---
+
+## 📫 Contact
+
+- **Portfolio:** [chaunceyjones.github.io](https://chaunceyjones.github.io)
+- **GitHub:** [@ChaunceyJones](https://github.com/ChaunceyJones)
