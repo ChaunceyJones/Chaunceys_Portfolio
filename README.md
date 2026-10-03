@@ -1,4 +1,4 @@
-[portfolio-hub-README.md](https://github.com/user-attachments/files/32987456/portfolio-hub-README.md)
+[portfolio-hub-README.md](https://github.com/user-attachments/files/32987796/portfolio-hub-README.md)
 # 👨‍💻 Chauncey's Portfolio
 
 Welcome to my portfolio. Here you'll find my projects, code repositories, and technical notes
@@ -81,8 +81,8 @@ Charts are generated in-pipeline with Matplotlib and embedded in each project's 
 project also has a 12-slide presentation deck walking through context, method, findings,
 limitations, and recommendation:
 
-- [Permian–Waha Basis Tracker — deck (PDF)](https://chaunceyjones.github.io/decks/waha-basis-tracker.pdf)
-- [Solar PPA Pricing — deck (PDF)](https://chaunceyjones.github.io/decks/solar-ppa-pricing.pdf)
+- [Permian–Waha Basis Tracker — deck](https://chaunceyjones.github.io/decks/waha-basis-tracker.html)
+- [Solar PPA Pricing — deck](https://chaunceyjones.github.io/decks/solar-ppa-pricing.html)
 
 *Tableau dashboards: in progress — I'll add them here as they're built.*
 
